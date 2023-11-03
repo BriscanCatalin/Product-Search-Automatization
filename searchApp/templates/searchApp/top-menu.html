@@ -1,0 +1,78 @@
+<nav class="navbar navbar-expand-sm navbar-light ">
+    <div class="container">
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <img src="../../static/img/logo.svg" title="Logo FastCompete" alt="FastCompete logo" class="nav-link logo">
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/">
+                        Products Search
+                    </a>
+                </li>
+                <li id="menu-dashboard" class="nav-item dropdown {% if page == 'dashboard' %}option-active{% endif %}">
+                    <a class="nav-link" href="/">
+                        <i class="fa fa-fw fa-th-large" aria-hidden="true"></i> Dashboard
+                    </a>
+                </li>
+            </ul> 
+
+            <ul class="d-flex align-items-center list-unstyled mb-0">
+                <li id="menu-add-feedback" class="nav-item">
+                    <a class="nav-link" href="" data-bs-toggle="modal" data-bs-target="#Backdrop">
+                        <i class="fa fa-comment"></i> FeedBack
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="Backdrop" aria-labelledby="BackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-confirm modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header flex-column">
+                    <div class="icon-box">
+                        <i class="fa fa-comment" aria-hidden="true"></i>
+                    </div>
+                    <h4 class="modal-title" id="BackdropLabel">Please Help Us Improve!</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>How was your experience with our App?</p>
+                </div>
+                <div class="modal-footer justify-content-center">
+                        <div>
+                            <textarea class="form-control" id="feedback" name="feedback" rows="2" placeholder="Your experience ..."></textarea>
+                            <input type="email" class="form-control mt-2 mb-2" id="email" name="email" value="" placeholder="E.g. example@company.com" />
+                        </div>
+                        <button type="submit" id="post-form" class="btn btn-primary" onclick="send()">Send</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+
+        function send() {
+            $.ajax({
+                type: 'POST',
+                url: "https://app.fastcompete.com/feedback",
+                dataType: "text",
+                data : {
+                    feedback: $('#feedback').val(),
+                    email: $('#email').val(),
+                },
+                success : function(json) {
+                    $('#Backdrop').modal('hide');
+                    console.log("requested access complete");
+                },
+                error: function(errorMessage){
+                  console.log("Error: ", errorMessage);
+                }
+            });
+        }
+
+    </script>
+
+</nav>

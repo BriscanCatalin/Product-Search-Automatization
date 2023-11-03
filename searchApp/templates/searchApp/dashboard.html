@@ -1,0 +1,86 @@
+{% extends "searchApp/base.html" %}
+
+{% block content %}
+{% load static %}
+
+<div class="container">
+
+    <div id="cover">
+        <form method="post">
+            {% csrf_token %}
+            <div class="tb">
+                <div class="td">
+                    <input type="text" id="search" name="search" placeholder="Search" required>
+                </div>
+                <div class="td" id="s-cover">
+                    <button type="submit">
+                    <div id="s-circle"></div>
+                    <span></span>
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    {% if products %}
+        <div class="row row-cols-1 row-cols-md-3 g-4">
+            {% for product in products %}
+            <div class="col">
+                <div class="card">
+                  <img src="{{ product.productImg }}" class="card-img-top" alt="...">
+                  <div class="card-body">
+                    <h5 class="card-title">{{ product.productTitle }}</h5>
+                    <p class="card-text">Score: {{ product.productCategory }}</p>
+                    <p class="card-text">
+                        <strong class="text-muted text-danger">Price: {{ product.productPrice }}</strong>
+                         <i class="fa fa-solid fa-link" onclick="location.href='{{ product.productLink }}'">
+                            View it on the website.
+                         </i>
+                    </p>
+
+                  </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="text-center h-50 w-50 no-events">
+            <h2>
+                You can search for everything. Our application will take all the results from different websites and will display them above.
+            </h2>
+        </div>
+    {% endif %}
+
+    <!-- Modal -->
+    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-confirm modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header flex-column">
+                    <div class="icon-box">
+                        <i class="fa fa-trash" aria-hidden="true"></i>
+                    </div>
+                    <h4 class="modal-title" id="staticBackdropLabel">Are you sure?</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Do you really want to delete these record? This process cannot be undone.</p>
+                </div>
+                <div class="modal-footer justify-content-center">
+                    <form method="POST">
+                        {% csrf_token %}
+                        <div>
+                            <input type="hidden" class="form-control" id="delete-web" name="delete-web">
+                        </div>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+</script>
+
+{% endblock %}
